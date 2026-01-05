@@ -1,0 +1,45 @@
+# --- Python Related ---
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+PRETRAINED/
+
+# --- YOLO / Ultralytics Specific ---
+# Loại bỏ các file weights (nặng và có thể tải lại sau)
+*.pt
+*.onnx
+*.engine
+*.openvino
+*.torchscript
+*.mlmodel
+*.tflite
+*.pb
+
+# Loại bỏ thư mục kết quả huấn luyện mặc định của YOLO
+runs/
+
+# Loại bỏ các file metadata của Ultralytics
+.ultralytics/
+
+# --- Dataset Related ---
+# Không nên đẩy bộ dữ liệu lên Git vì dung lượng rất lớn
+datasets/
+data/*.zip
+data/*.tar
+data/*.gz
+
+# --- IDE / OS Specific ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- C++ / Build (Nếu bạn biên dịch module tùy chỉnh) ---
+build/
+dist/
+*.so

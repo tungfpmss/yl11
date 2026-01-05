@@ -1,0 +1,8 @@
+path: D:\0.TRAIN
+train: train
+val: val
+test: test
+
+# Classes
+names:
+  0: mark

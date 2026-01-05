@@ -1,0 +1,23 @@
+# python -m pip install -r requirements.txt
+# python -m pip install --upgrade pip setuptools wheel
+# python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+
+ultralytics
+tensorflow
+scikit-learn
+labelme
+labelimg
+labelme2yolo
+pandas
+onnx
+tf2onnx
+PyQt5
+PyQt5Designer
+
+numpy
+opencv-python>=4.6.0
+pandas
+Pillow
+pyYAML
+requests
+tqdm
