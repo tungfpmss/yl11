@@ -1,0 +1,37 @@
+private void btn_Run_Click(object sender, EventArgs e)
+{
+    string v_path = @"D:\9.ATC_AI_Core\YOLO_Trainers\DATASET\Video\2103099-uhd_3840_2160_30fps.mp4";
+    string m_path = @"D:\9.ATC_AI_Core\YOLO_Trainers\PRETRAINED\Yolo11_Object_Detection\yolo11n.pt";
+
+    string pythonPath = @"D:\Setup\Python31210_TF220_Torch291_YL12_Qt5\python.exe";
+    string scriptPath = @"D:\9.ATC_AI_Core\YOLO_Trainers\VIDEO\video_object_detect.py";
+    scriptPath += $"  \"{v_path}\" \"{m_path}\"";
+
+    Process process = new Process
+    {
+        StartInfo = new ProcessStartInfo
+        {
+            FileName = pythonPath,
+            Arguments = scriptPath,
+            UseShellExecute = false,
+            RedirectStandardOutput = true, // Đọc output từ lệnh print()
+            CreateNoWindow = true          // Chạy ngầm
+        }
+    };
+
+    // Sự kiện nhận mỗi dòng Text từ Python print()
+    process.OutputDataReceived += (s, args) =>
+    {
+        if (!string.IsNullOrEmpty(args.Data))
+        {
+            // Cập nhật lên giao diện
+            this.Invoke(new MethodInvoker(delegate {
+                rtb_Logs.AppendText(args.Data +"\r\n");
+                rtb_Logs.ScrollToCaret();
+            }));
+        }
+    };
+
+    process.Start();
+    process.BeginOutputReadLine();
+}
