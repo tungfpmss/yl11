@@ -1,13 +1,22 @@
+public Frm_Main()
+{
+    InitializeComponent();
+}
+
+Process pyProcess;
+
 private void btn_Run_Click(object sender, EventArgs e)
 {
-    string v_path = @"D:\9.ATC_AI_Core\YOLO_Trainers\DATASET\Video\2103099-uhd_3840_2160_30fps.mp4";
-    string m_path = @"D:\9.ATC_AI_Core\YOLO_Trainers\PRETRAINED\Yolo11_Object_Detection\yolo11n.pt";
+    string v_path = @"F:\9.Source_Code\Yolo11\DATASET\Video\2103099-uhd_3840_2160_30fps.mp4";
+    string m_path = @"F:\9.Source_Code\Yolo11\PRETRAINED\Yolo11_Object_Detection\yolo11n.pt";
 
-    string pythonPath = @"D:\Setup\Python31210_TF220_Torch291_YL12_Qt5\python.exe";
-    string scriptPath = @"D:\9.ATC_AI_Core\YOLO_Trainers\VIDEO\video_object_detect.py";
-    scriptPath += $"  \"{v_path}\" \"{m_path}\"";
+    string pythonPath = @"C:\Python312\python.exe";
+    string scriptPath = @"F:\9.Source_Code\Yolo11\VIDEO\tracking.py";
+    scriptPath += " \"" + v_path + "\" \"" + m_path + "\"";
 
-    Process process = new Process
+    lb_Status.Text = "Initing...";
+
+    pyProcess = new Process
     {
         StartInfo = new ProcessStartInfo
         {
@@ -20,18 +29,28 @@ private void btn_Run_Click(object sender, EventArgs e)
     };
 
     // Sự kiện nhận mỗi dòng Text từ Python print()
-    process.OutputDataReceived += (s, args) =>
+    pyProcess.OutputDataReceived += (s, args) =>
     {
         if (!string.IsNullOrEmpty(args.Data))
         {
             // Cập nhật lên giao diện
-            this.Invoke(new MethodInvoker(delegate {
-                rtb_Logs.AppendText(args.Data +"\r\n");
+            this.Invoke(new MethodInvoker(delegate
+            {
+                if (args.Data == "Init_Done") lb_Status.Text = "Tracking...";
+                rtb_Logs.AppendText(args.Data + "\r\n");
                 rtb_Logs.ScrollToCaret();
             }));
         }
     };
 
-    process.Start();
-    process.BeginOutputReadLine();
+    pyProcess.Start();
+    pyProcess.BeginOutputReadLine();
+}
+
+private void Frm_Main_FormClosing(object sender, FormClosingEventArgs e)
+{
+    if (pyProcess != null && !pyProcess.HasExited)
+    {
+        pyProcess.Kill(); // Buộc dừng Python khi tắt App
+    }
 }

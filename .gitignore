@@ -8,6 +8,7 @@ env/
 venv/
 ENV/
 PRETRAINED/
+DATASET/
 
 # --- YOLO / Ultralytics Specific ---
 # Loại bỏ các file weights (nặng và có thể tải lại sau)

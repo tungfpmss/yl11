@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-DATASET = r"D:\9.Source_Code\SVSC\yolo_dataset"
+DATASET = r"..\DATASET\yolo_dataset"
 
 
 def train_yolo():

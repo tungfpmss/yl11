@@ -1,20 +1,20 @@
-import os
 import sys
-import time
-from pathlib import Path
+
 from ultralytics import YOLO
 import cv2
+import os
+
+import time
+from pathlib import Path
 
 
-def run_predict(video_path, model_pt):
-
-    model_ov = os.path.join(Path(model_pt).parent, 'yolo11n_openvino_model')
-    os.makedirs(model_ov, exist_ok=True)
+def run_predict(video_path, model_path):
+    model_ov = os.path.join(Path(model_path).parent, 'yolo11n_openvino_model')
 
     if not os.path.exists(model_ov):
         print("Exporting model to OpenVINO...")
-        model = YOLO(model_pt)
-        model.export(format='openvino', half=True, dynamic=True)
+        model = YOLO(model_path)
+        model.export(format='openvino', half=True)
 
     model = YOLO(model_ov, task='detect')
 
@@ -34,10 +34,11 @@ def run_predict(video_path, model_pt):
         persist=True,
         imgsz=320,
         tracker='bytetrack.yaml',
+        device='cpu',
+        verbose=False,
         augment=False)
 
-    output_text = 'Init_Done'
-    print(output_text)
+    print('Init_Done')
     sys.stdout.flush()
 
     prev_time = 0
@@ -64,10 +65,12 @@ def run_predict(video_path, model_pt):
 
     cv2.destroyAllWindows()
 
-if __name__ == '__main__':
-    # video_path = r'..\DATASET\Video\2103099-uhd_3840_2160_30fps.mp4'
-    # model_pt = r"..\PRETRAINED/Yolo11_Object_Detection/yolo11n.pt"
 
-    v_path = sys.argv[1]
-    m_path = sys.argv[2]
-    run_predict(v_path, m_path)
+if __name__ == '__main__':
+    # video_path = r'..\DATASET\VIDEO\2103099-uhd_3840_2160_30fps.mp4'
+    # model_path = r"..\PRETRAINED/Yolo11_Object_Detection/yolo11n.pt"
+
+    video_path = sys.argv[1]
+    model_path = sys.argv[2]
+
+    run_predict(video_path, model_path)
