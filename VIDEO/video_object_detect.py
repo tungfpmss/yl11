@@ -2,7 +2,7 @@ from torch.cuda import device
 from ultralytics import YOLO
 import cv2
 
-video_path = r'F:\9.Source_Code\DATASET\Cat_Dog_Human\8944044-uhd_2160_3840_25fps.mp4'
+video_path = r'../DATASET/Video_Car_Traffic\2103099-uhd_3840_2160_30fps.mp4'
 model = YOLO(r"..\PRETRAINED/Yolo12_Object_Detection/yolo12n.pt")
 model.export(format='openvino')
 

@@ -9,10 +9,10 @@ from pathlib import Path
 
 
 def run_predict(video_path, model_path):
-    model_ov = os.path.join(Path(model_path).parent, 'yolo11n_openvino_model')
+    model_ov = os.path.join(Path(model_path).parent, Path(model_path).stem + '_openvino_model')
 
     if not os.path.exists(model_ov):
-        print("Exporting model to OpenVINO...")
+        print(f"Exporting model to OpenVINO...{model_ov}")
         model = YOLO(model_path)
         model.export(format='openvino', half=True)
 
@@ -36,7 +36,8 @@ def run_predict(video_path, model_path):
         tracker='bytetrack.yaml',
         device='cpu',
         verbose=False,
-        augment=False)
+        augment=False
+    )
 
     print('Init_Done')
     sys.stdout.flush()
@@ -67,10 +68,7 @@ def run_predict(video_path, model_path):
 
 
 if __name__ == '__main__':
-    # video_path = r'..\DATASET\VIDEO\2103099-uhd_3840_2160_30fps.mp4'
-    # model_path = r"..\PRETRAINED/Yolo11_Object_Detection/yolo11n.pt"
-
-    video_path = sys.argv[1]
-    model_path = sys.argv[2]
+    video_path = r'..\DATASET\Video_Car_Traffic\2103099-uhd_3840_2160_30fps.mp4'
+    model_path = r"..\PRETRAINED/Yolo11_Object_Detection/yolo11n.pt"
 
     run_predict(video_path, model_path)
