@@ -20,8 +20,8 @@ COLOR = {
 def run_predict(video_path, model_path):
     model_ov = os.path.join(Path(model_path).parent, Path(model_path).stem + '_openvino_model')
 
-    if os.path.exists(model_ov):
-        shutil.rmtree(model_ov)
+    # if os.path.exists(model_ov):
+    #     shutil.rmtree(model_ov)
 
     if not os.path.exists(model_ov):
         print(f"Exporting model to OpenVINO...{model_ov}")
@@ -59,9 +59,6 @@ def run_predict(video_path, model_path):
         augment=False  # Tắt kỹ thuật tăng cường dữ liệu khi dự đoán để ưu tiên tốc độ thực thi nhanh nhất
     )
 
-    print('Init_Done')
-    sys.stdout.flush()
-
     count_ids = set()
     total_ids = 0
 
@@ -88,15 +85,14 @@ def run_predict(video_path, model_path):
 
             for box, id, conf, cls in zip(boxes, ids, confs, clss):
                 class_name = model.names[cls]
-                cx = int((box[0] + box[2]) / 2)
-                cy = int((box[1] + box[3]) / 2)
+                x1, y1, x2, y2 = map(int, box)
+                cx, cy = int((x1 + x2) / 2), int((y1 + y2) / 2)
 
                 if roi_x1 < cx < roi_x2 and roi_y1 < cy < roi_y2:
                     if id not in count_ids:
                         count_ids.add(id)
                         total_ids += 1
 
-                x1, y1, x2, y2 = map(int, box)
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
                 cv2.circle(frame, (cx, cy), 6, (0, 0, 255), -1)
 

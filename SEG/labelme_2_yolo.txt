@@ -1,0 +1,2 @@
+labelme2yolo --json_dir D:\9.ATC_AI_Core\YOLO_Trainers\DATASET --val_size 0.15 --test_size 0.15
+labelme2yolo --json_dir D:\9.ATC_AI_Core\PythonProject\Final\Student\InputData --val_size 0.2
